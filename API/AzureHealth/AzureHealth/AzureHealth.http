@@ -1,0 +1,6 @@
+@AzureHealth_HostAddress = http://localhost:5191
+
+GET {{AzureHealth_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

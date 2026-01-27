@@ -1,0 +1,224 @@
+<div class="brand-header">
+  <div class="header-content">
+    <h1>Azure Health Monitor</h1>
+    <span class="subtitle">Real-time overview of Function Apps and App Service Plans</span>
+  </div>
+</div>
+
+<div class="dashboard-body">
+  <div class="content-wrapper">
+
+    <div *ngIf="isLoading" class="loading">
+      Loading Azure resources...
+    </div>
+
+    <div *ngIf="!isLoading">
+
+      <div class="charts-grid">
+        
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3>Agent health snapshot : ALL</h3>
+          </div>
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="healthData"
+              [scheme]="healthColorScheme"
+              [doughnut]="true"
+              [arcWidth]="0.25"
+              [labels]="false"
+              [legend]="false">
+            </ngx-charts-pie-chart>
+            <div class="donut-center">
+              <div class="big-number">{{ functionApps.length + stoppedApps.length }}</div>
+              <div class="small-label">Total Apps</div>
+            </div>
+          </div>
+          <div class="legend-custom">
+            <div class="legend-item"><span class="dot healthy"></span> Healthy ({{functionApps.length}})</div>
+            <div class="legend-item"><span class="dot stopped"></span> Stopped ({{stoppedApps.length}})</div>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3>Distribution by Operating System</h3>
+          </div>
+          <div class="chart-container">
+            <ngx-charts-pie-chart
+              [results]="osData"
+              [scheme]="osColorScheme"
+              [doughnut]="true"
+              [arcWidth]="0.25"
+              [labels]="true"
+              [legend]="false">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3>Highest CPU Utilization (Top 5 Plans)</h3>
+          </div>
+          <div class="chart-container bar-chart-fix">
+            <ngx-charts-bar-vertical
+              [results]="cpuData"
+              [scheme]="resourceColorScheme"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showXAxisLabel]="false"
+              [showYAxisLabel]="true"
+              yAxisLabel="CPU %">
+            </ngx-charts-bar-vertical>
+          </div>
+        </div>
+      </div>
+
+      <section class="card">
+        <div class="card-header danger">
+          <h3>Stopped Function Apps</h3>
+          <span class="pill danger">{{ stoppedApps.length }} stopped</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="azure-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of stoppedApps">
+                <td>{{ app.name }}</td>
+                <td>
+                  <span class="status-badge stopped">Stopped</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>App Service Plans</h3>
+          <span class="pill">{{ appServicePlans.length }} plans</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="azure-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Resource Group</th>
+                <th>Region</th>
+                <th>OS</th>
+                <th>Tier</th>
+                <th>Size</th>
+                <th style="min-width: 120px;">CPU</th>
+                <th style="min-width: 120px;">Memory</th>
+                <th>Instances</th>
+                <th>Apps</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let plan of appServicePlans">
+                <td class="bold">{{ plan.name }}</td>
+                <td>{{ plan.resourceGroup }}</td>
+                <td>{{ plan.region }}</td>
+                <td>{{ plan.operatingSystem }}</td>
+                <td>{{ plan.planTier }}</td>
+                <td>{{ plan.planSize }}</td>
+
+                <td>
+                  <div class="metric">
+                    <span>{{ plan.cpuUtilization }}%</span>
+                    <div class="progress-track">
+                      <div
+                        class="progress-fill"
+                        [class.warn]="plan.cpuUtilization > 70"
+                        [style.width.%]="plan.cpuUtilization">
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="metric">
+                    <span>{{ plan.memoryPercent }}%</span>
+                    <div class="progress-track">
+                      <div
+                        class="progress-fill"
+                        [class.warn]="plan.memoryPercent > 70"
+                        [style.width.%]="plan.memoryPercent">
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <td>{{ plan.instances }}</td>
+                <td>{{ plan.appCount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>Function App Details</h3>
+          <span class="pill">{{ functionApps.length }} running</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="azure-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Resource Group</th>
+                <th>Region</th>
+                <th>Server Farm</th>
+                <th>Response Time</th>
+                <th>Memory</th>
+                <th style="min-width: 100px;">Health</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let app of functionApps">
+                <td class="bold">{{ app.name }}</td>
+                <td>{{ app.resourceGroup }}</td>
+                <td>{{ app.region }}</td>
+                <td>{{ app.serverFarmId }}</td>
+
+                <td>
+                  <span class="chip">{{ app.avgResponseTime }} ms</span>
+                </td>
+
+                <td>
+                  <span class="chip blue">{{ app.memoryUsed }}</span>
+                </td>
+
+                <td>
+                  <div class="metric">
+                    <span>{{ app.healthCheck }}%</span>
+                    <div class="progress-track">
+                      <div
+                        class="progress-fill"
+                        [style.width.%]="app.healthCheck">
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>

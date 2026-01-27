@@ -1,0 +1,269 @@
+/* --- GLOBAL LAYOUT & RESET --- */
+:host {
+  display: block;
+  width: 100%;
+  /* Fallback Font if Segoe UI isn't available, matching the clean sans-serif of reference */
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- HEADER (Deep Green) --- */
+.brand-header {
+  background-color: #005d1f; /* Requested Dark Green */
+  padding: 20px 0;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  color: #ffffff;
+}
+
+.header-content {
+  padding: 0 32px; /* Aligns with content below */
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.brand-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #e0f2f1; /* Light mint/white for subtitle */
+  font-weight: 400;
+}
+
+/* --- BODY (Beige Background) --- */
+.dashboard-body {
+  background-color: #f6f4e9; /* Requested Beige */
+  min-height: calc(100vh - 85px); /* Full height minus header */
+  width: 100%;
+}
+
+.content-wrapper {
+  padding: 32px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* --- CARDS (Rounded & Soft Shadow) --- */
+.card {
+  background: #ffffff;
+  border: none; /* Removed border for cleaner look */
+  border-radius: 12px; /* Increased radius to match reference */
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Softer, spread out shadow */
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #004b29; /* Dark Green Text for Headings */
+}
+
+.card-header.danger h3 { color: #a4262c; }
+
+/* --- CHARTS GRID --- */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.big-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: #004b29; /* Dark Green */
+  line-height: 1;
+}
+
+.small-label {
+  font-size: 12px;
+  color: #605e5c;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* --- LEGEND --- */
+.legend-custom {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 24px 24px 24px;
+}
+
+.legend-item {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #323130;
+  font-weight: 500;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+
+.dot.healthy { background-color: #00a93f; } /* Brand Bright Green */
+.dot.stopped { background-color: #e00b1c; }
+
+/* --- TABLES --- */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.azure-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.azure-table th {
+  padding: 16px 24px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  color: #004b29; /* Dark Green Header Text */
+  background-color: #ffffff;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.azure-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f6f4e9;
+  color: #201f1e;
+}
+
+.azure-table tr:hover td {
+  background: #fbfbf9;
+}
+
+.bold { font-weight: 700; }
+
+/* --- PILLS & BADGES --- */
+.pill {
+  background: #e6f6ec; /* Light Green Background */
+  color: #005d1f; /* Dark Green Text */
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.pill.danger {
+  background: #fde7e9;
+  color: #a4262c;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.status-badge.stopped {
+  background: #fde7e9;
+  color: #a4262c;
+}
+
+.chip {
+  background: #f6f4e9;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: monospace;
+  font-weight: 600;
+  color: #323130;
+}
+
+.chip.blue {
+  background: #e6f6ec;
+  color: #005d1f;
+}
+
+/* --- METRICS & PROGRESS BARS --- */
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 140px;
+}
+
+.progress-track {
+  height: 8px;
+  background: #ebebeb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #00a93f; /* Brand Bright Green */
+  transition: width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.progress-fill.warn { background: #d13438; }
+
+.loading {
+  padding: 60px;
+  text-align: center;
+  color: #605e5c;
+  font-size: 16px;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+  .header-content, .content-wrapper {
+    padding: 16px;
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
